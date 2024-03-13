@@ -1,0 +1,3 @@
+dbus-fast
+pytest
+flake8
