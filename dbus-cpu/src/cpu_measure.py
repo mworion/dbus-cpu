@@ -29,16 +29,14 @@ def get_cpu_times():
         cpustats = procfile.readline().split()
 
     if cpustats[0] != 'cpu':
-        raise ValueError("First line of /proc/stat not recognised")
+        return None
 
     user_time = int(cpustats[1])    # time spent in user space
     nice_time = int(cpustats[2])    # 'nice' time spent in user space
     system_time = int(cpustats[3])  # time spent in kernel space
 
     idle_time = int(cpustats[4])    # time spent idly
-    iowait_time = int(cpustats[5])    # time spent waiting is also doing nothing
+    user_time = user_time + nice_time
+    base_time = sum(int(x) for x in cpustats[1:7])
 
-    time_doing_things = user_time + nice_time + system_time
-    time_doing_nothing = idle_time + iowait_time
-
-    return time_doing_things, time_doing_nothing
+    return user_time, system_time, idle_time, base_time

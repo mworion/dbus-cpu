@@ -48,8 +48,11 @@ class DbusCPUService(object):
         :param productid:
         """
         self.dbusservice = VeDbusService(servicename)
-        self.prev_time_doing_things = 0
-        self.prev_time_doing_nothing = 0
+        self.prev_cpu_time = 0
+        self.prev_user_time = 0
+        self.prev_system_time = 0
+        self.prev_idle_time = 0
+        self.prev_base_time = 0
 
         logger.debug("%s /DeviceInstance = %d" % (servicename, deviceinstance))
 
@@ -66,6 +69,9 @@ class DbusCPUService(object):
         self.dbusservice.add_path('/HardwareVersion', 0)
         self.dbusservice.add_path('/Connected', 1)
         self.dbusservice.add_path('/CPU_Load', None, writeable=True)
+        self.dbusservice.add_path('/CPU_Load_User', None, writeable=True)
+        self.dbusservice.add_path('/CPU_Load_System', None, writeable=True)
+        self.dbusservice.add_path('/CPU_IDLE', None, writeable=True)
         self.dbusservice.add_path('/DeviceName', 'DBUS-CPU')
 
         GLib.timeout_add(POLL_TIME, self.update)
@@ -74,19 +80,35 @@ class DbusCPUService(object):
         """
         :return:
         """
-        time_doing_things, time_doing_nothing = get_cpu_times()
-        diff_time_doing_things = time_doing_things - self.prev_time_doing_things
-        diff_time_doing_nothing = time_doing_nothing - self.prev_time_doing_nothing
-        cpu_percentage = 100.0 * diff_time_doing_things / (
-                    diff_time_doing_things + diff_time_doing_nothing)
-        self.prev_time_doing_things = time_doing_things
-        self.prev_time_doing_nothing = time_doing_nothing
-        logger.debug(f'CPU load: {cpu_percentage:2.1f} %')
-        return cpu_percentage
+        val = get_cpu_times()
+        if val is None:
+            return 0, 0, 0
+        user_time, system_time, idle_time, base_time = val
+        cpu_time = user_time + system_time
+        diff_cpu_time = cpu_time - self.prev_cpu_time
+        diff_user_time = user_time - self.prev_user_time
+        diff_system_time = system_time - self.prev_system_time
+        diff_idle_time = system_time - self.prev_idle_time
+        diff_base_time = base_time - self.prev_base_time
+        cpu_percentage = 100.0 * diff_cpu_time / (diff_cpu_time + diff_base_time)
+        user_percentage = 100.0 * diff_user_time / (diff_user_time + diff_base_time)
+        system_percentage = 100.0 * diff_system_time / (diff_system_time + diff_base_time)
+        idle_percentage = 100.0 * diff_idle_time / (diff_idle_time + diff_base_time)
+        self.prev_cpu_time = cpu_time
+        self.prev_base_time = base_time
+        logger.debug(f'CPU load: {cpu_percentage:2.1f} %, '
+                     f'CPU user: {user_percentage:2.1f} %, '
+                     f'CPU system: {user_percentage:2.1f} %, '
+                     f'CPU idle: {idle_percentage:2.1f} %')
+        return cpu_percentage, user_percentage, system_percentage, idle_percentage
 
     def update(self):
         with self.dbusservice as dbus:
-            dbus['/CPU_Load'] = self.cpu_percentage_loop()
+            cpu, user, system, idle = self.cpu_percentage_loop()
+            dbus['/CPU_Load'] = cpu
+            dbus['/CPU_Load_User'] = user
+            dbus['/CPU_Load_System'] = system
+            dbus['/CPU_IDLE'] = idle
         return True
 
     @staticmethod
