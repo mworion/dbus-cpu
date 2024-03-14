@@ -23,36 +23,26 @@
 #
 ###########################################################
 
-echo "Install dbus-seplos"
-# disable driver
-bash /data/etc/dbus-seplos/scripts/disable.sh
+echo "Install dbus-cpu"
 
 # remove copied files
-rm -rf /service/dbus-seplos.*
+rm -rf /service/dbus-cpu
 
 # remove logs
-rm -rf /var/log/dbus-seplos.ttyUSB*
+rm -rf /var/log/dbus-cpu
 
-# remove serial starter extension
-filename=/data/conf/serial-starter.d/dbus-seplos.conf
-if [ -f "$filename" ];
-then
-    rm "$filename"
-fi
-
-# remove symlinks (soft links)
-rm -rf /opt/victronenergy/service-templates/dbus-seplos
-rm -rf /opt/victronenergy/dbus-seplos
+rm -rf /opt/victronenergy/service/dbus-cpu
+rm -rf /opt/victronenergy/dbus-cpu
 
 # restore GUI changes
-bash /data/etc/dbus-seplos/scripts/restore-gui.sh
+# bash /data/etc/dbus-cpu/scripts/restore-gui.sh
 
 # remove install-script from rc.local
 filename=/data/rc.local
 if [ -f "$filename" ];
 then
-  sed -i "/bash \/data\/etc\/dbus-seplos\/scripts\/install.sh/d" $filename
+  sed -i "/bash \/data\/etc\/dbus-cpu\/scripts\/install.sh/d" $filename
 fi
 
-echo "Uninstalled dbus-seplos"
+echo "Uninstalled dbus-cpu"
 

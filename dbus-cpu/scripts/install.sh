@@ -28,27 +28,23 @@ echo "Install dbus-seplos"
 bash /opt/victronenergy/swupdate-scripts/remount-rw.sh
 
 # remove old symlinks
-rm -rf /opt/victronenergy/service-templates/dbus-seplos
-rm -rf /opt/victronenergy/dbus-seplos
+rm -rf /opt/victronenergy/service/dbus-cpu
+rm -rf /opt/victronenergy/dbus-cpu
 
 # make sure all necessary files are executable
-chmod +x /data/etc/dbus-seplos/scripts/*.sh
-chmod +x /data/etc/dbus-seplos/src/*.py
-chmod +x /data/etc/dbus-seplos/service/run
-chmod +x /data/etc/dbus-seplos/service/log/run
+chmod +x /data/etc/dbus-cpu/scripts/*.sh
+chmod +x /data/etc/dbus-cpu/src/*.py
+chmod +x /data/etc/dbus-cpu/service/run
+chmod +x /data/etc/dbus-cpu/service/log/run
 
 # install by copying files
-mkdir /opt/victronenergy/service-templates/dbus-seplos
-cp -rf /data/etc/dbus-seplos/service/* /opt/victronenergy/service-templates/dbus-seplos
-mkdir /opt/victronenergy/dbus-seplos
-cp -rf /data/etc/dbus-seplos /opt/victronenergy
-
-# enable driver for serial-starter
-mkdir -p /data/conf/serial-starter.d
-cp /data/etc/dbus-seplos/scripts/dbus-seplos.conf /data/conf/serial-starter.d/dbus-seplos.conf
+mkdir /opt/victronenergy/service/dbus-cpu
+cp -rf /data/etc/dbus-cpu/service/* /opt/victronenergy/service/dbus-cpu
+mkdir /opt/victronenergy/dbus-cpu
+cp -rf /data/etc/dbus-cpu /opt/victronenergy
 
 # install gui qml
-bash /data/etc/dbus-seplos/scripts/install-gui.sh
+# bash /data/etc/dbus-cpu/scripts/install-gui.sh
 
 # add install-script to rc.local to be ready for firmware update
 filename=/data/rc.local
@@ -57,12 +53,9 @@ if [ ! -f "$filename" ]; then
     chmod 755 "$filename"
 fi
 
-if ! grep -qxF "bash /data/etc/dbus-seplos/scripts/install.sh" $filename;
+if ! grep -qxF "bash /data/etc/dbus-cpu/scripts/install.sh" $filename;
 then
-    echo "bash /data/etc/dbus-seplos/scripts/install.sh" >> $filename
+    echo "bash /data/etc/dbus-cpu/scripts/install.sh" >> $filename
 fi
 
-# kill driver, if running. It gets restarted by the service daemon
-bash /data/etc/dbus-seplos/scripts/kill-driver.sh
-
-echo "Installed dbus-seplos"
+echo "Installed dbus-cpu"

@@ -24,4 +24,4 @@
 ############################################################
 
 exec 2>&1
-exec /opt/victronenergy/dbus-cpu/scripts/start-cpu.sh
+exec python /opt/victronenergy/dbus-cpu/src/cpu_run.py
