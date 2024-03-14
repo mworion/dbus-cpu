@@ -21,9 +21,6 @@
 #
 ###########################################################
 
-from cpu_utils import logger
-
-
 def get_cpu_times():
     """
     :return:
