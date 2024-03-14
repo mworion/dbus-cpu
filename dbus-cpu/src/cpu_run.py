@@ -82,13 +82,13 @@ class DbusCPUService(object):
         """
         val = get_cpu_times()
         if val is None:
-            return 0, 0, 0
+            return 0, 0, 0, 0
         user_time, system_time, idle_time, base_time = val
         cpu_time = user_time + system_time
         diff_cpu_time = cpu_time - self.prev_cpu_time
         diff_user_time = user_time - self.prev_user_time
         diff_system_time = system_time - self.prev_system_time
-        diff_idle_time = system_time - self.prev_idle_time
+        diff_idle_time = idle_time - self.prev_idle_time
         diff_base_time = base_time - self.prev_base_time
         cpu_percentage = 100.0 * diff_cpu_time / (diff_cpu_time + diff_base_time)
         user_percentage = 100.0 * diff_user_time / (diff_user_time + diff_base_time)
@@ -96,6 +96,9 @@ class DbusCPUService(object):
         idle_percentage = 100.0 * diff_idle_time / (diff_idle_time + diff_base_time)
         self.prev_cpu_time = cpu_time
         self.prev_base_time = base_time
+        self.prev_user_time = user_time
+        self.prev_system_time = system_time
+        self.prev_idle_time = idle_time
         logger.debug(f'CPU load: {cpu_percentage:2.1f} %, '
                      f'CPU user: {user_percentage:2.1f} %, '
                      f'CPU system: {user_percentage:2.1f} %, '
