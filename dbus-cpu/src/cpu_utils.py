@@ -25,7 +25,7 @@ import logging
 import time
 import datetime
 
-DRIVER_VERSION = '0.0.3'
+DRIVER_VERSION = '0.0.4'
 POLL_TIME = 5000
 
 logging.Formatter.converter = time.gmtime
