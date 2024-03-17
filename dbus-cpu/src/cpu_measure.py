@@ -52,10 +52,10 @@ def get_memory_usage():
     if mem_stats[0].split()[0] != 'MemTotal:':
         return None
 
-    mem_total = int(mem_stats[0].split()[1] / 1024)
-    mem_free = int(mem_stats[1].split()[1] / 1024)
-    mem_cached = int(mem_stats[3].split()[1] / 1024)
-    mem_buffers = int(mem_stats[4].split()[1] / 1024)
+    mem_total = int(int(mem_stats[0].split()[1]) / 1024)
+    mem_free = int(int(mem_stats[1].split()[1]) / 1024)
+    mem_cached = int(int(mem_stats[3].split()[1]) / 1024)
+    mem_buffers = int(int(mem_stats[4].split()[1]) / 1024)
     mem_used = mem_total - (mem_free + mem_buffers + mem_cached)
 
     return mem_total, mem_free, mem_cached, mem_buffers, mem_used

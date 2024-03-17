@@ -44,7 +44,7 @@ mkdir /opt/victronenergy/dbus-cpu
 cp -rf /data/etc/dbus-cpu /opt/victronenergy
 
 # install gui qml
-# bash /data/etc/dbus-cpu/scripts/install-gui.sh
+bash /data/etc/dbus-cpu/scripts/install-gui.sh
 
 # add install-script to rc.local to be ready for firmware update
 filename=/data/rc.local

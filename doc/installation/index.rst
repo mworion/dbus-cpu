@@ -1,16 +1,8 @@
 Driver installation
 ===================
-.. note:: The driver does not do any setup of your BMS/Battery. You need to have
-          a working battery system before you start.
-
-.. note:: The driver is not a replacement for a BMS. It is a tool to monitor your
-          battery system. You should always have a working BMS based on CAN
-          installed and active.
 
 .. warning:: The driver is only tested with Venus OS > 3.00 and < v3.3. It will
-             not work with Venus OS other than that. Secondly it is only tested
-             with Seplos BMS hardware v2 and firmware 16.06. I do not know if it
-             works with version 3 of the hardware.
+             not work with Venus OS other than that.
 
 Install or update over SSH
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -21,7 +13,7 @@ these commands to start the installer:
 
 .. code-block:: bash
 
-   wget -O /tmp/install.sh https://raw.githubusercontent.com/mworion/dbus-seplos/master/install-target.sh
+   wget -O /tmp/install.sh https://raw.githubusercontent.com/mworion/dbus-cpu/master/install-target.sh
    bash /tmp/install.sh
 
 The installer will download the latest released version of the driver and installs
@@ -29,7 +21,7 @@ it on your system. The location of the install will be in
 
 .. code-block:: bash
 
-   /data/etc/dbus-seplos
+   /data/etc/dbus-cpu
 
 The installer will also create a service file for the driver and enable it. All
 the installations to the system will be done from this origin with symlinks.
@@ -43,17 +35,8 @@ In addition the installer will add lines to
 to keep the installation persistent over reboots und firmware updates of the venus
 system. Uninstall will remove this entry.
 
-Furthermore the installer will add the following file:
-
-.. code-block:: bash
-
-   /data/conf/serial-starter.d/dbus-seplos.conf
-
-to enable the serial starter daemon to recognize and integrate dbus-seplos
-auto-detect for the RS-485 interface.
-
 Last the installer will backup / add some files to the GUI system to make the GUI
-aware of the more detailed information provided by dbus-seplos. Uninstall will
+aware of the more detailed information provided by dbus-cpu. Uninstall will
 remove these files and changes.
 
 You could customize the installation by editing the script. All scripts are located
@@ -61,7 +44,7 @@ in the same directory:
 
 .. code-block:: bash
 
-   /data/etc/dbus-seplos/scripts
+   /data/etc/dbus-cpu/scripts
 
 Settings
 ^^^^^^^^
@@ -69,11 +52,6 @@ Basically no settings could be made as the driver is designed to be plug and pla
 
 Behavior
 ^^^^^^^^
-dbus-seplos will start automatically after installation. The master battery will
-be detected and the driver will start to collect data. If you have multiple
-batteries, dbus-seplos will detect them and add as much Slave devices as needed.
-The addresses selected with the dip switches on the hardware will be used to
-identify the driver battery connection. Any change in DIP settings will change
-the order and ID of the driver data stored in the dbus system.
-
+dbus-cpu will start automatically after installation. It will read CPU stats
+(usage, memory) from /proc/stat and /proc/meminfo and publish them on the D-Bus.
 
