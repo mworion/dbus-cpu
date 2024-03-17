@@ -5,7 +5,12 @@ detailed changes list, please refer to the commit list on GitHub.
 
 Released versions of dbus-cpu
 -----------------------------
+v 0.0.5
+
+- bugfix
+
 v 0.0.4
+
 - optimizing digits for the memory stats
 
 v 0.0.2

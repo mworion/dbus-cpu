@@ -48,7 +48,7 @@ MbPage {
             item {
                 bind: Utils.path(cpuPrefix, "/CPU_Memory_Used")
                 unit: "MB"
-                decimals:
+                decimals: 0
             }
         }
         MbItemValue {
