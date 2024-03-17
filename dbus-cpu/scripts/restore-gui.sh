@@ -24,10 +24,10 @@
 ###########################################################
 
 # restore original backup
-if [ -f /opt/victronenergy/gui/qml/PageBattery.qml.backup ]; then
-    echo "Restoring PageBattery.qml..."
-    cp -f /opt/victronenergy/gui/qml/PageBattery.qml.backup /opt/victronenergy/gui/qml/PageBattery.qml
-    echo "PageBattery.qml was restored."
+if [ -f /opt/victronenergy/gui/qml/PageSettingsFirmware.qml.backup ]; then
+    echo "Restoring PageSettingsFirmware.qml..."
+    cp -f /opt/victronenergy/gui/qml/PageSettingsFirmware.qml.backup /opt/victronenergy/gui/qml/PageSettingsFirmware.qml
+    echo "PageSettingsFirmware.qml was restored."
 fi
 
-bash /data/etc/dbus-seplos/scripts/restart-gui.sh
+bash /data/etc/dbus-cpu/scripts/restart-gui.sh

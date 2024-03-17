@@ -27,7 +27,7 @@ import platform
 from cpu_utils import logger
 from cpu_utils import POLL_TIME
 from cpu_utils import DRIVER_VERSION
-from cpu_measure import get_cpu_times
+from cpu_measure import get_cpu_times, get_memory_usage
 
 sys.path.insert(1,
                 os.path.join(os.path.dirname(__file__),
@@ -72,6 +72,11 @@ class DbusCPUService(object):
         self.dbusservice.add_path('/CPU_Load_User', None, writeable=True)
         self.dbusservice.add_path('/CPU_Load_System', None, writeable=True)
         self.dbusservice.add_path('/CPU_IDLE', None, writeable=True)
+        self.dbusservice.add_path('/CPU_Memory_Total', None, writeable=True)
+        self.dbusservice.add_path('/CPU_Memory_Free', None, writeable=True)
+        self.dbusservice.add_path('/CPU_Memory_Cached', None, writeable=True)
+        self.dbusservice.add_path('/CPU_Memory_Buffers', None, writeable=True)
+        self.dbusservice.add_path('/CPU_Memory_Used', None, writeable=True)
         self.dbusservice.add_path('/DeviceName', 'DBUS-CPU')
 
         GLib.timeout_add(POLL_TIME, self.update)
@@ -105,13 +110,36 @@ class DbusCPUService(object):
                      f'CPU idle: {idle_percentage:2.1f} %')
         return cpu_percentage, user_percentage, system_percentage, idle_percentage
 
+    def cpu_memory_loop(self):
+        """
+        :return:
+        """
+        val = get_memory_usage()
+        if val is None:
+            return 0, 0, 0, 0, 0
+
+        mem_total, mem_free, mem_cached, mem_buffers, mem_used = val
+        self.dbusservice['/CPU_Memory_Total'] = mem_total
+        self.dbusservice['/CPU_Memory_Free'] = mem_free
+        self.dbusservice['/CPU_Memory_Cached'] = mem_cached
+        self.dbusservice['/CPU_Memory_Buffers'] = mem_buffers
+        self.dbusservice['/CPU_Memory_Used'] = mem_used
+        return mem_total, mem_free, mem_cached, mem_buffers, mem_used
+
     def update(self):
         with self.dbusservice as dbus:
             cpu, user, system, idle = self.cpu_percentage_loop()
+            total, free, cached, buffers, used = self.cpu_memory_loop()
             dbus['/CPU_Load'] = cpu
             dbus['/CPU_Load_User'] = user
             dbus['/CPU_Load_System'] = system
             dbus['/CPU_IDLE'] = idle
+            dbus['/CPU_Memory_Total'] = total
+            dbus['/CPU_Memory_Free'] = free
+            dbus['/CPU_Memory_Cached'] = cached
+            dbus['/CPU_Memory_Buffers'] = buffers
+            dbus['/CPU_Memory_Used'] = used
+
         return True
 
     @staticmethod

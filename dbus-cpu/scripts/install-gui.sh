@@ -24,10 +24,15 @@
 ###########################################################
 
 echo "Install GUI"
-# backup old PageBattery.qml once. New firmware upgrade will remove the backup
-if [ ! -f /opt/victronenergy/gui/qml/PageBattery.qml.backup ]; then
-    cp /opt/victronenergy/gui/qml/PageBattery.qml /opt/victronenergy/gui/qml/PageBattery.qml.backup
+# backup old PageSettingsFirmware.qml once. New firmware upgrade will remove the backup
+if [ ! -f /opt/victronenergy/gui/qml/PageSettingsFirmware.qml.backup ]; then
+    cp /opt/victronenergy/gui/qml/PageSettingsFirmware.qml /opt/victronenergy/gui/qml/PageSettingsFirmware.qml.backup
 fi
+
+# copy new PageBattery.qml
+cp /data/etc/dbus-cpu/qml/PageSettingsFirmware.qml /opt/victronenergy/gui/qml/
+# copy new PageBatteryCellVoltages
+cp /data/etc/dbus-cpu/qml/PageSettingsCPU.qml /opt/victronenergy/gui/qml/
 
 
 bash /data/etc/dbus-seplos/scripts/restart-gui.sh
