@@ -40,7 +40,7 @@ MbPage {
             item {
                 bind: Utils.path(cpuPrefix, "/CPU_Memory_Free")
                 unit: "MB"
-                decimals: 1
+                decimals: 0
             }
         }
         MbItemValue {
@@ -48,7 +48,7 @@ MbPage {
             item {
                 bind: Utils.path(cpuPrefix, "/CPU_Memory_Used")
                 unit: "MB"
-                decimals: 1
+                decimals:
             }
         }
         MbItemValue {
@@ -56,7 +56,7 @@ MbPage {
             item {
                 bind: Utils.path(cpuPrefix, "/CPU_Memory_Buffers")
                 unit: "MB"
-                decimals: 1
+                decimals: 0
             }
         }
     }

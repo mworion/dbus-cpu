@@ -5,13 +5,9 @@ Welcome to dbus-cpu !
     :align: center
     :scale: 71%
 
-The basic idea is that dbus-seplos will generate a second path only readable to
-the seplos BMS and try to gather all further detailed information from the BMS
-like cell voltages and offer them in dbus of a venus system. Further it will add
-and change some venus UI pages to show these information.
-
-This is a driver for Venus OS devices (any GX device sold by Victron or a
-Raspberry Pi running the Venus OS image).
+The basic idea is that dbus-cpu will show some CPU stats on the GUI. This is a
+driver for Venus OS devices (any GX device sold by Victron or a Raspberry Pi
+running the Venus OS image).
 
 .. warning:: Expert functionality! You should be sure about what you are doing.
              I do not take any responsibility for any damage or loss of data.
@@ -27,16 +23,8 @@ Content index
 
 Known limitations
 -----------------
-This driver is developed and tested on a seplos v2 (FW 16.06) and a
-Venus GX (FW 3.x). It will not run on Venus OS version lower to 3.0 and does not
-support beta versions with the new UI from 3.20 on.
-
-The driver is not tested on a seplos v3 system. There definitely the wiring has
-to be adjusted and checked if the driver is working.
-
-The installation of the driver might interfere with other drivers. Especially
-having dbus-serial-battery installed at the same time causes conflicts
-
+The driver ist tested on a Venus GX (FW 3.x). It will not run on Venus OS version
+lower to 3.0 and does not support beta versions with the new UI from 3.20 on.
 
 Reporting issues
 ----------------
@@ -46,12 +34,12 @@ recommendations how to feed back.
 
 .. note:: Please report issues / bugs here:
 
-          https://github.com/mworion/dbus-seplos/issues.
+          https://github.com/mworion/dbus-cpu/issues.
 
           And if you have feature requests discussions or for all other topics of
           interest there is a good place to start here:
 
-          https://github.com/mworion/dbus-seplos/discussions
+          https://github.com/mworion/dbus-cpu/discussions
 
 In case of a bug report please have a good description (maybe a screenshot if it‘s
 related to GUI) and add the log file(s). Normally you just could drop the log file
