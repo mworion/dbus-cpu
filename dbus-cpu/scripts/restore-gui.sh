@@ -27,7 +27,7 @@
 if [ -f /opt/victronenergy/gui/qml/PageSettingsFirmware.qml.backup ]; then
     echo "Restoring PageSettingsFirmware.qml..."
     cp -f /opt/victronenergy/gui/qml/PageSettingsFirmware.qml.backup /opt/victronenergy/gui/qml/PageSettingsFirmware.qml
+    bash /data/etc/dbus-cpu/scripts/restart-gui.sh
     echo "PageSettingsFirmware.qml was restored."
 fi
 
-bash /data/etc/dbus-cpu/scripts/restart-gui.sh

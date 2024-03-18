@@ -42,5 +42,5 @@ tar -xvzf dbus-cpu.tar.gz
 rm -rf /data/etc/dbus-cpu
 mv ./dbus-cpu /data/etc
 rm dbus-cpu.tar.gz
-bash /data/etc/dbus-cpu/scripts/install.sh withgui
+bash /data/etc/dbus-cpu/scripts/install.sh gui
 echo "Download and copy dbus-cpu done"
