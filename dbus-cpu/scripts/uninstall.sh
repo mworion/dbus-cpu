@@ -35,7 +35,7 @@ rm -rf /opt/victronenergy/service/dbus-cpu
 rm -rf /opt/victronenergy/dbus-cpu
 
 # restore GUI changes
-# bash /data/etc/dbus-cpu/scripts/restore-gui.sh
+bash /data/etc/dbus-cpu/scripts/restore-gui.sh
 
 # remove install-script from rc.local
 filename=/data/rc.local

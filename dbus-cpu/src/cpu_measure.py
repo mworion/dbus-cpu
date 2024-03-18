@@ -40,3 +40,22 @@ def get_cpu_times():
     base_time = sum(int(x) for x in cpustats[1:7])
 
     return user_time, system_time, idle_time, base_time
+
+
+def get_memory_usage():
+    """
+    :return:
+    """
+    with open("/proc/meminfo") as procfile:
+        mem_stats = procfile.readlines()
+
+    if mem_stats[0].split()[0] != 'MemTotal:':
+        return None
+
+    mem_total = int(int(mem_stats[0].split()[1]) / 1024)
+    mem_free = int(int(mem_stats[1].split()[1]) / 1024)
+    mem_cached = int(int(mem_stats[3].split()[1]) / 1024)
+    mem_buffers = int(int(mem_stats[4].split()[1]) / 1024)
+    mem_used = mem_total - (mem_free + mem_buffers + mem_cached)
+
+    return mem_total, mem_free, mem_cached, mem_buffers, mem_used

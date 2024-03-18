@@ -20,3 +20,11 @@
 # Licence MIT
 #
 ###########################################################
+
+from src.cpu_measure import get_cpu_times
+
+
+def test_get_cpu_times():
+
+    val = get_cpu_times()
+    assert val is not None
