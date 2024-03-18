@@ -5,6 +5,10 @@ detailed changes list, please refer to the commit list on GitHub.
 
 Released versions of dbus-cpu
 -----------------------------
+v 0.0.6
+
+- added option for headless install
+
 v 0.0.5
 
 - bugfix
