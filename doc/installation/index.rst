@@ -9,7 +9,7 @@ Install or update over SSH
 .. note:: Requires root access.
 
 Log into your Venus OS device using a SSH client like Putty or bash and run
-these commands to start the installer including the changes to the GUI:
+these commands to start the installer including GUI:
 
 .. code-block:: bash
 
@@ -18,7 +18,7 @@ these commands to start the installer including the changes to the GUI:
 
 
 For those, who want to just use the driver without impacting the GUI, please use the 
-headless installation
+headless installation:
 
 .. code-block:: bash
 
