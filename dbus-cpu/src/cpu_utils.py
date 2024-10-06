@@ -25,7 +25,7 @@ import logging
 import time
 import datetime
 
-DRIVER_VERSION = '0.1.0'
+DRIVER_VERSION = '0.1.1'
 POLL_TIME = 5000
 
 logging.Formatter.converter = time.gmtime
@@ -39,4 +39,4 @@ logging.basicConfig(level=logging.WARNING,
                     datefmt='%Y-%m-%d %H:%M:%S',
                     )
 
-logger = logging.getLogger('Seplos')
+logger = logging.getLogger('dbus-cpu')

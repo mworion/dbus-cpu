@@ -40,13 +40,13 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'dbus-seplos'
+project = 'dbus-cpu'
 copyright = '2024, mworion'
 author = 'Michael Würtenberger'
 
 # The full version, including alpha/beta/rc tags
-version = '0.0.3'
-release = '0.0.3'
+version = '0.1.1'
+release = '0.1.1'
 master_doc = 'index'
 
 # -- General configuration ---------------------------------------------------

@@ -102,11 +102,6 @@ class DbusCPUService(object):
         self.prev_user_time = user_time
         self.prev_system_time = system_time
         self.prev_idle_time = idle_time
-        logger.debug(f'CPU load: {cpu_percentage:2.1f} %, '
-                     f'CPU user: {user_percentage:2.1f} %, '
-                     f'CPU system: {user_percentage:2.1f} %, '
-                     f'CPU idle: {idle_percentage:2.1f} %, ',
-                     )
         return cpu_percentage, user_percentage, system_percentage, idle_percentage
 
     @staticmethod
@@ -169,7 +164,7 @@ def main():
         deviceinstance=0)
 
     main_loop = GLib.MainLoop()
-    logger.info('cpu-dbus started on port')
+    logger.info('cpu-dbus started')
 
     try:
         main_loop.run()
