@@ -27,7 +27,7 @@ import platform
 from cpu_utils import logger
 from cpu_utils import POLL_TIME
 from cpu_utils import DRIVER_VERSION
-from cpu_measure import get_cpu_times, get_memory_usage
+from cpu_measure import get_cpu_times, get_memory_usage, get_load_avg
 
 sys.path.insert(1,
                 os.path.join(os.path.dirname(__file__),
@@ -41,11 +41,6 @@ class DbusCPUService(object):
     def __init__(self, servicename, deviceinstance, productname='DBUS-CPU',
                  connection='None', productid=0):
         """
-        :param servicename:
-        :param deviceinstance:
-        :param productname:
-        :param connection:
-        :param productid:
         """
         self.dbusservice = VeDbusService(servicename)
         self.prev_cpu_time = 0
@@ -77,17 +72,20 @@ class DbusCPUService(object):
         self.dbusservice.add_path('/CPU_Memory_Cached', None, writeable=True)
         self.dbusservice.add_path('/CPU_Memory_Buffers', None, writeable=True)
         self.dbusservice.add_path('/CPU_Memory_Used', None, writeable=True)
+        self.dbusservice.add_path('/CPU_AVG_1', None, writeable=True)
+        self.dbusservice.add_path('/CPU_AVG_5', None, writeable=True)
+        self.dbusservice.add_path('/CPU_AVG_15', None, writeable=True)
         self.dbusservice.add_path('/DeviceName', 'DBUS-CPU')
 
         GLib.timeout_add(POLL_TIME, self.update)
 
     def cpu_percentage_loop(self):
         """
-        :return:
         """
         val = get_cpu_times()
         if val is None:
             return 0, 0, 0, 0
+
         user_time, system_time, idle_time, base_time = val
         cpu_time = user_time + system_time
         diff_cpu_time = cpu_time - self.prev_cpu_time
@@ -107,29 +105,37 @@ class DbusCPUService(object):
         logger.debug(f'CPU load: {cpu_percentage:2.1f} %, '
                      f'CPU user: {user_percentage:2.1f} %, '
                      f'CPU system: {user_percentage:2.1f} %, '
-                     f'CPU idle: {idle_percentage:2.1f} %')
+                     f'CPU idle: {idle_percentage:2.1f} %, ',
+                     )
         return cpu_percentage, user_percentage, system_percentage, idle_percentage
 
-    def cpu_memory_loop(self):
+    @staticmethod
+    def cpu_memory_loop():
         """
-        :return:
         """
         val = get_memory_usage()
         if val is None:
             return 0, 0, 0, 0, 0
 
-        mem_total, mem_free, mem_cached, mem_buffers, mem_used = val
-        self.dbusservice['/CPU_Memory_Total'] = mem_total
-        self.dbusservice['/CPU_Memory_Free'] = mem_free
-        self.dbusservice['/CPU_Memory_Cached'] = mem_cached
-        self.dbusservice['/CPU_Memory_Buffers'] = mem_buffers
-        self.dbusservice['/CPU_Memory_Used'] = mem_used
-        return mem_total, mem_free, mem_cached, mem_buffers, mem_used
+        return val
+
+    @staticmethod
+    def cpu_load_avg_loop():
+        """
+        """
+        val = get_load_avg()
+        if val is None:
+            return 0, 0, 0
+
+        return val
 
     def update(self):
+        """
+        """
         with self.dbusservice as dbus:
             cpu, user, system, idle = self.cpu_percentage_loop()
             total, free, cached, buffers, used = self.cpu_memory_loop()
+            avg_1, avg_5, avg_15 = self.cpu_load_avg_loop()
             dbus['/CPU_Load'] = cpu
             dbus['/CPU_Load_User'] = user
             dbus['/CPU_Load_System'] = system
@@ -139,15 +145,15 @@ class DbusCPUService(object):
             dbus['/CPU_Memory_Cached'] = cached
             dbus['/CPU_Memory_Buffers'] = buffers
             dbus['/CPU_Memory_Used'] = used
+            dbus['/CPU_AVG_1'] = avg_1
+            dbus['/CPU_AVG_5'] = avg_5
+            dbus['/CPU_AVG_15'] = avg_15
 
         return True
 
     @staticmethod
     def handle_changed_value(path, value):
         """
-        :param path:
-        :param value:
-        :return:
         """
         logger.debug("someone else updated %s to %s" % (path, value))
         return True

@@ -44,6 +44,27 @@ MbPage {
             }
         }
         MbItemValue {
+            description: qsTr("CPU Top 1 Min")
+            item {
+                bind: Utils.path(cpuPrefix, "/CPU_AVG_1")
+                decimals: 2
+            }
+        }
+        MbItemValue {
+            description: qsTr("CPU Top 5 Min")
+            item {
+                bind: Utils.path(cpuPrefix, "/CPU_AVG_5")
+                decimals: 2
+            }
+        }
+        MbItemValue {
+            description: qsTr("CPU Top 15 Min")
+            item {
+                bind: Utils.path(cpuPrefix, "/CPU_AVG_15")
+                decimals: 2
+            }
+        }
+        MbItemValue {
             description: qsTr("CPU Memory Used")
             item {
                 bind: Utils.path(cpuPrefix, "/CPU_Memory_Used")
